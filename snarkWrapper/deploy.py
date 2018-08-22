@@ -1,3 +1,4 @@
+from sys import platform
 import json
 import web3
 
@@ -15,8 +16,13 @@ from ctypes import cdll
 import ctypes as c
 
 tree_depth = 29
-lib = cdll.LoadLibrary('../build/src/libmiximus.so')
-#lib = cdll.LoadLibrary('../../test_merkel_tree/build/src/libmiximus.so')
+
+if platform == "linux" or platform == "linux2":
+    # linux
+    lib = cdll.LoadLibrary('../build/src/libmiximus.so')
+elif platform == "darwin":
+    # OS X
+    lib = cdll.LoadLibrary('../build/src/libmiximus.dylib')
 
 prove = lib.prove
 prove.restype = c.c_char_p;
